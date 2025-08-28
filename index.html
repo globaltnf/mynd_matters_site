@@ -1,0 +1,239 @@
+<!--
+  The MYND Matters™ Programme landing page
+  This page is designed to convert visitors into subscribers by clearly communicating
+  the benefits of the product, presenting clinical results, and providing an easy
+  way to start a subscription via Stripe. The aesthetic takes cues from
+  Calm.com's soothing colour palette and OnXmaps' clean interface. Feel free to
+  adjust the copy and styling to better match your brand's voice.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The MYND Matters™ Pack ‒ Unlock Your Best Mind, Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Google fonts for elegant typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <!-- Stripe.js will be loaded on demand inside script.js -->
+</head>
+<body>
+  <!-- Site header with logo and simple navigation -->
+  <header>
+    <div class="logo">MYND360°</div>
+    <!-- Mobile navigation toggle -->
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <nav>
+      <a href="#why">Why</a>
+      <a href="#blends">Blends</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#trust">Quality</a>
+      <a href="#stats">Results</a>
+      <a href="#buy">Buy Now</a>
+    </nav>
+  </header>
+
+  <!-- Hero section: updated heading, supporting text, call to action and product visual -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Unwind, Focus &amp; Remember</h1>
+      <p>Feel calm, sharpen your focus and strengthen memory with our three‑step pack.</p>
+      <!-- Link to customer details page instead of directly initiating payment -->
+      <a href="checkout.html" id="buy-button" class="cta-button">Buy Now</a>
+    </div>
+    <div class="hero-image">
+      <!-- Product image; feel free to replace package.png with your own asset -->
+      <img src="images/hero_hd.png" alt="The MYND Matters Pack">
+      <!-- Circular price badge overlay -->
+      <div class="price-badge">
+        <span>Special price</span>
+        <strong>S$258</strong>
+        <small>per month</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why choose section: high‑level reasons to choose the pack -->
+  <section id="why" class="why">
+    <h2>Why Choose the MYND Matters Pack?</h2>
+    <div class="why-grid">
+      <div class="why-item">
+        <img src="images/circle-check.svg" alt="Holistic support icon">
+        <h3>Holistic support</h3>
+        <p>Three synergistic blends work together to calm, sharpen and protect your mind.</p>
+      </div>
+      <div class="why-item">
+        <img src="images/flask.svg" alt="Clinically tested icon">
+        <h3>Clinically tested</h3>
+        <p>Results are backed by double‑blind and placebo‑controlled trials.</p>
+      </div>
+      <div class="why-item">
+        <img src="images/leaf.svg" alt="Natural ingredients icon">
+        <h3>Natural ingredients</h3>
+        <p>Formulated with premium botanical extracts and essential nutrients.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our blends section: detail the three component formulas with features and key ingredients -->
+  <section id="blends" class="blends">
+    <h2>What’s Inside</h2>
+    <div class="blend-grid">
+      <!-- Feel Calm blend -->
+      <div class="blend blend-calm">
+        <h3>Feel Calm</h3>
+        <p class="tagline">Reduce stress and find your zen.</p>
+        <ul class="features">
+          <li>Supports relaxation and positive mood</li>
+          <li>Helps reduce stress after one dose</li>
+          <li>Continual support when taken daily</li>
+          <li>Encourages a better night’s sleep</li>
+        </ul>
+        <h4>Key ingredients</h4>
+        <ul class="ingredients">
+          <li><strong>L‑Theanine</strong> – helps support healthy cortisol levels</li>
+          <li><strong>Casein Hydrolysate</strong> – provides a unique peptide for relaxing</li>
+        </ul>
+      </div>
+      <!-- Sharp Focus blend -->
+      <div class="blend blend-focus">
+        <h3>Sharp Focus</h3>
+        <p class="tagline">Stay sharp, react fast and think clearly.</p>
+        <ul class="features">
+          <li>Supports focus after just one dose</li>
+          <li>Enhances reaction time &amp; working memory</li>
+          <li>Improves concentration and mental clarity</li>
+        </ul>
+        <h4>Key ingredients</h4>
+        <ul class="ingredients">
+          <li><strong>Caffeine</strong> – immediate support for focus and alertness</li>
+          <li><strong>Bacopa</strong> – supports enhanced concentration</li>
+          <li><strong>B6 &amp; B12</strong> – essential vitamins for brain function</li>
+        </ul>
+      </div>
+      <!-- Mind Full blend -->
+      <div class="blend blend-mind">
+        <h3>Mind Full</h3>
+        <p class="tagline">Strengthen your memory and protect your brain.</p>
+        <ul class="features">
+          <li>Improves episodic &amp; everyday memory</li>
+          <li>Supports healthy brain function and recall</li>
+          <li>Helps protect against oxidative stress</li>
+        </ul>
+        <h4>Key ingredients</h4>
+        <ul class="ingredients">
+          <li><strong>Astaxanthin</strong> – protects brain cells from oxidative stress</li>
+          <li><strong>Grape Extract</strong> – benefits memory and cognitive function</li>
+          <li><strong>Vitamin&nbsp;E</strong> – essential vitamin to protect cells</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials section -->
+  <section id="testimonials" class="testimonials">
+    <h2>What Our Customers Are Saying</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <p>“After just a week, my stress melted away and my head felt clear. It’s now part of my daily ritual.”</p>
+        <div class="rating">
+          <img src="images/star.svg" alt="Star rating">
+          <img src="images/star.svg" alt="Star rating">
+          <img src="images/star.svg" alt="Star rating">
+          <img src="images/star.svg" alt="Star rating">
+          <img src="images/star.svg" alt="Star rating">
+        </div>
+        <h4>Samuel L.</h4>
+      </div>
+      <div class="testimonial-card">
+        <p>“The MYND Matters Pack has helped me recall names and details with ease. My memory has never felt this sharp.”</p>
+        <div class="rating">
+          <img src="images/star.svg" alt="Star rating">
+          <img src="images/star.svg" alt="Star rating">
+          <img src="images/star.svg" alt="Star rating">
+          <img src="images/star.svg" alt="Star rating">
+          <img src="images/star.svg" alt="Star rating">
+        </div>
+        <h4>Jasmine R.</h4>
+      </div>
+      <div class="testimonial-card">
+        <p>“My focus during long meetings has improved dramatically. I feel calm but alert throughout the day.”</p>
+        <div class="rating">
+          <img src="images/star.svg" alt="Star rating">
+          <img src="images/star.svg" alt="Star rating">
+          <img src="images/star.svg" alt="Star rating">
+          <img src="images/star.svg" alt="Star rating">
+          <img src="images/star.svg" alt="Star rating">
+        </div>
+        <h4>Ethan C.</h4>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust & quality section -->
+  <section id="trust" class="trust">
+    <h2>Quality &amp; Trust You Can Count On</h2>
+    <div class="trust-grid">
+      <div class="badge">
+        <img src="images/flask.svg" alt="Clinically tested icon">
+        <h3>Clinically tested</h3>
+        <p>Formulas proven in double‑blind placebo‑controlled studies.</p>
+      </div>
+      <div class="badge">
+        <img src="images/certificate.svg" alt="Quality guarantee icon">
+        <h3>Quality guaranteed</h3>
+        <p>Produced in GMP‑certified facilities with rigorous quality controls.</p>
+      </div>
+      <div class="badge">
+        <img src="images/leaf.svg" alt="Natural ingredients icon">
+        <h3>Natural &amp; Non‑GMO</h3>
+        <p>Made with premium botanical extracts and nutrients.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Statistics/results section to provide social proof and credibility -->
+  <section id="stats" class="stats">
+    <div class="stat">
+      <strong>97%</strong>
+      <p>Improved mental clarity</p>
+      <small>Double‑blind, randomized clinical study<sup>1</sup></small>
+    </div>
+    <div class="stat">
+      <strong>94%</strong>
+      <p>Better focus</p>
+      <small>Clinically proven results<sup>2</sup></small>
+    </div>
+    <div class="stat">
+      <strong>42%</strong>
+      <p>Improved everyday memory</p>
+      <small>Over placebo (12‑week study)<sup>3</sup></small>
+    </div>
+  </section>
+
+  <!-- Call to action with footnotes detailing the clinical references -->
+  <section id="buy" class="cta">
+    <h2>Ready to transform your mind?</h2>
+    <p>Join thousands of others who have experienced the clarity and confidence that comes with the MYND Matters™ Pack.</p>
+    <!-- Second call to action also navigates to customer details page -->
+    <a href="checkout.html" id="buy-button-2" class="cta-button">Subscribe Now for S$258/month</a>
+    <p class="footnote">
+      <sup>1</sup> In a double‑blind, randomized, placebo‑controlled clinical study, 60 moderately stressed subjects took a placebo or Feel Calm blend for 30 days to evaluate the effects of the blend on stress.<br>
+      <sup>2</sup> Clinically proven results from an unpublished clinical trial for 34 healthy adults who used the Sharp Focus blend for 2 weeks.<br>
+      <sup>3</sup> Statistically significant results over placebo from an unpublished clinical trial over a 12‑week study for 100 healthy adults with self‑reported memory complaints.
+    </p>
+  </section>
+
+  <!-- Site footer with legal text -->
+  <footer>
+    <p>COPYRIGHT © 2025 // GLOBALTNF. ALL RIGHTS RESERVED. GLOBALTNF is a community brand fully managed by TMO Holdings Pte. Ltd. Registered with ACRA as UEN 201405401H.</p>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

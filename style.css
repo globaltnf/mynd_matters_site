@@ -1,0 +1,661 @@
+/*
+  Global styles for the MYND Matters landing page
+  The palette draws on calming blues and warm neutrals, inspired by Calm.com,
+  while the layout echoes the clean, feature‑forward approach of OnXmaps. Adjust
+  the CSS variables below to tweak colours sitewide.
+*/
+
+:root {
+  --color-background: #F9F7F3;
+  --color-card: #FFFFFF;
+  --color-primary: #4A90E2; /* calming blue for highlights */
+  --color-accent: #F5A623; /* warm gold for calls to action */
+  --color-text: #2D3748;
+  --color-subtext: #4D4D4D;
+  --color-muted: #7A7A7A;
+  --shadow-small: 0 2px 6px rgba(0, 0, 0, 0.05);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.07);
+  --max-width: 1200px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: var(--color-card);
+  box-shadow: var(--shadow-small);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  /* Provide space for mobile dropdown when nav toggles */
+}
+
+/* Nav toggle (hamburger) styling */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--color-text);
+  margin: 2px 0;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+nav a {
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+nav a:hover {
+  color: var(--color-primary);
+}
+
+/* Hero section */
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3rem 2rem;
+  background-color: #F6F4ED;
+}
+
+.hero-text {
+  flex: 1 1 45%;
+  max-width: 500px;
+}
+
+.hero-text h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--color-text);
+}
+
+.hero-text p {
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+  color: var(--color-subtext);
+}
+
+.cta-button {
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.cta-button:hover {
+  background: #D48919;
+}
+
+.hero-image {
+  position: relative;
+  flex: 1 1 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.hero-image img {
+  width: 100%;
+  max-width: 450px;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-medium);
+}
+
+.price-badge {
+  position: absolute;
+  top: 10%;
+  right: 5%;
+  background: var(--color-accent);
+  color: #fff;
+  padding: 1rem;
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  font-family: 'Playfair Display', serif;
+  text-transform: uppercase;
+}
+
+.price-badge span {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.price-badge strong {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.price-badge small {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+/* About section */
+.about {
+  padding: 3rem 2rem;
+  text-align: center;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.about h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--color-text);
+}
+
+.about p {
+  font-size: 1.125rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-subtext);
+}
+
+.about ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.about ul li {
+  background: #E6EEF5;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  color: var(--color-text);
+  box-shadow: var(--shadow-small);
+}
+
+/* Benefits grid */
+.benefits {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 3rem 2rem;
+  background: #F1F5F9;
+}
+
+.benefit {
+  background: var(--color-card);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-small);
+  flex: 1 1 250px;
+  max-width: 300px;
+  text-align: center;
+}
+
+.benefit img {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1rem;
+  /* Tint the monochrome SVG to our primary colour */
+  filter: invert(46%) sepia(87%) saturate(300%) hue-rotate(178deg) brightness(96%) contrast(88%);
+}
+
+.benefit h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+  font-family: 'Playfair Display', serif;
+}
+
+.benefit ul {
+  list-style: none;
+  text-align: center;
+}
+
+.benefit ul li {
+  margin-bottom: 0.5rem;
+  color: var(--color-subtext);
+}
+
+/* Statistics section */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  background: var(--color-card);
+  padding: 3rem 2rem;
+}
+
+.stat {
+  text-align: center;
+  padding: 2rem;
+  flex: 1 1 250px;
+}
+
+.stat strong {
+  font-size: 3rem;
+  color: var(--color-primary);
+  font-family: 'Playfair Display', serif;
+}
+
+.stat p {
+  font-size: 1.125rem;
+  margin: 0.5rem 0;
+  color: var(--color-text);
+}
+
+.stat small {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+/* Why choose section */
+.why {
+  padding: 3rem 2rem;
+  text-align: center;
+  background: var(--color-card);
+}
+
+.why h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--color-text);
+}
+
+.why-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.why-item {
+  background: #F8FAFC;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-small);
+  flex: 1 1 250px;
+  max-width: 300px;
+  text-align: center;
+}
+
+.why-item img {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1rem;
+  filter: invert(46%) sepia(87%) saturate(300%) hue-rotate(178deg) brightness(96%) contrast(88%);
+}
+
+.why-item h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
+}
+
+.why-item p {
+  font-size: 0.95rem;
+  color: var(--color-subtext);
+  line-height: 1.4;
+}
+
+/* Blends section */
+.blends {
+  padding: 3rem 2rem;
+  background: #F9F9FB;
+  text-align: center;
+}
+
+.blends h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--color-text);
+}
+
+.blend-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.blend {
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-small);
+  flex: 1 1 250px;
+  max-width: 350px;
+  text-align: left;
+}
+
+.blend h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+  color: var(--color-text);
+}
+
+.blend .tagline {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: var(--color-subtext);
+  font-weight: 500;
+}
+
+.blend ul {
+  margin-bottom: 1rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+.blend ul li {
+  margin-bottom: 0.5rem;
+  color: var(--color-subtext);
+  position: relative;
+  padding-left: 1rem;
+}
+
+.blend ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.4rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+
+.blend h4 {
+  font-size: 1rem;
+  margin: 0.5rem 0 0.5rem;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.blend-calm {
+  background: #EAF7F9;
+}
+
+.blend-focus {
+  background: #FFF6E5;
+}
+
+.blend-mind {
+  background: #EAF0FF;
+}
+
+/* Testimonials section */
+.testimonials {
+  padding: 3rem 2rem;
+  background: var(--color-card);
+  text-align: center;
+}
+
+.testimonials h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--color-text);
+}
+
+.testimonial-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  background: #F8FAFC;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-small);
+  flex: 1 1 250px;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.testimonial-card p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: var(--color-subtext);
+  font-style: italic;
+}
+
+.rating {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center;
+}
+
+.rating img {
+  width: 18px;
+  height: 18px;
+  filter: invert(46%) sepia(87%) saturate(300%) hue-rotate(178deg) brightness(96%) contrast(88%);
+}
+
+.testimonial-card h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Trust & quality section */
+.trust {
+  padding: 3rem 2rem;
+  background: #F9F9FB;
+  text-align: center;
+}
+
+.trust h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--color-text);
+}
+
+.trust-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.badge {
+  background: #F8FAFC;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-small);
+  flex: 1 1 250px;
+  max-width: 300px;
+  text-align: center;
+}
+
+.badge img {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1rem;
+  filter: invert(46%) sepia(87%) saturate(300%) hue-rotate(178deg) brightness(96%) contrast(88%);
+}
+
+.badge h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
+}
+
+.badge p {
+  font-size: 0.95rem;
+  color: var(--color-subtext);
+  line-height: 1.4;
+}
+/* Call to action */
+.cta {
+  padding: 3rem 2rem;
+  text-align: center;
+  background: #F6F4ED;
+}
+
+.cta h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-family: 'Playfair Display', serif;
+  color: var(--color-text);
+}
+
+.cta p {
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+  color: var(--color-subtext);
+}
+
+.cta .footnote {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  margin-top: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.4;
+}
+
+/* Footer */
+footer {
+  background: var(--color-card);
+  color: var(--color-muted);
+  text-align: center;
+  padding: 1rem 2rem;
+  font-size: 0.75rem;
+}
+
+/* Responsive navigation */
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: flex;
+  }
+  nav {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    background: var(--color-card);
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  }
+  nav.open {
+    display: flex;
+  }
+  nav a {
+    margin: 0.75rem 0;
+  }
+  header {
+    flex-wrap: wrap;
+  }
+  .hero {
+    text-align: center;
+  }
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+  .price-badge {
+    width: 120px;
+    height: 120px;
+    font-size: 0.9rem;
+  }
+  .price-badge strong {
+    font-size: 1.5rem;
+  }
+  .blend-grid,
+  .testimonial-grid,
+  .trust-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+  .blend,
+  .testimonial-card,
+  .badge {
+    max-width: 100%;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+  }
+  .hero-image {
+    margin-top: 1.5rem;
+  }
+  .about ul {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  nav {
+    display: none; /* Hide navigation on small screens for simplicity */
+  }
+}
