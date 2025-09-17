@@ -23,6 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const address2 = document.getElementById('address2').value.trim();
     const postalCode = document.getElementById('postal-code').value.trim();
     try {
+
+      // NEW: read hidden affiliate field (fallback to cookie just in case)
+const affiliateField = document.getElementById('affiliate');
+const cookieAffMatch = document.cookie.match(/(?:^|;\s*)aff=([^;]+)/);
+const affiliate =
+  (affiliateField && affiliateField.value.trim()) ||
+  (cookieAffMatch ? decodeURIComponent(cookieAffMatch[1]) : '');
+      
       const response = await fetch('/create-checkout-session', {
         method: 'POST',
         headers: {
