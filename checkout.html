@@ -98,6 +98,7 @@
         <input type="text" id="address2" name="address2" placeholder="Apartment, suite, etc. (optional)">
         <label for="postal-code">Postal Code</label>
         <input type="text" id="postal-code" name="postalCode" placeholder="e.g. 123456" pattern="\d{6}" title="Postal code should be 6 digits" required>
+        <input type="hidden" id="affiliate" name="affiliate" value="">
         <button type="submit" id="submit-button">Continue to Payment</button>
       </form>
     </div>
@@ -106,5 +107,16 @@
     <p>COPYRIGHT © 2025 // GLOBALTNF. ALL RIGHTS RESERVED. GLOBALTNF is a community brand fully managed by TMO Holdings Pte. Ltd. Registered with ACRA as UEN 201405401H.</p>
   </footer>
   <script src="checkout.js" defer></script>
+  <script>
+  function getCookie(name) {
+    const m = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return m ? decodeURIComponent(m[2]) : '';
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const aff = getCookie('aff');
+    const el  = document.getElementById('affiliate');
+    if (el && aff) el.value = aff;
+  });
+</script>
 </body>
 </html>
