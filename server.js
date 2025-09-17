@@ -94,7 +94,7 @@ app.use(express.json());
 app.post('/create-checkout-session', async (req, res) => {
   try {
     // Extract customer details from the request body, if provided
-    const { name, email, phone, address1, address2, postalCode } = req.body || {};
+    const { name, email, phone, address1, address2, postalCode, affiliate } = req.body || {};
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'subscription',
@@ -121,6 +121,7 @@ app.post('/create-checkout-session', async (req, res) => {
         address_line1: address1 || '',
         address_line2: address2 || '',
         postal_code: postalCode || '',
+        affiliate: affiliate || req.affiliate || ''
       },
       // These URLs should be replaced with your deployed domain
       success_url: `${req.protocol}://${req.get('host')}/success.html`,
