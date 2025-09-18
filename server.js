@@ -39,13 +39,17 @@ const RESERVED = new Set([
   'checkout.js', 'script.js', 'style.css',
   'robots.txt', 'sitemap.xml', 'favicon.ico',
   // optional top-level asset folders:
-  'images', 'img', 'assets'
+  'images', 'img', 'assets',
+  'create-checkout-session'
 ]);
 
 // Treat requests that *end* with a known file extension as files (css/js/img/font/…)
 const FILE_EXT_RE = /\.(?:css|js|mjs|map|png|jpe?g|gif|webp|avif|svg|ico|bmp|json|txt|xml|woff2?|ttf|eot|otf|mp4|webm|ogg|wav|pdf)$/i;
 
 app.use((req, res, next) => {
+  // --- let non-GET requests bypass affiliate logic entirely ---
+  if (req.method !== 'GET') return next();
+  
   const host  = (req.headers.host || '').split(':')[0];
   const first = (req.path.split('/').filter(Boolean)[0] || '').toLowerCase();
   const looksLikeFile = FILE_EXT_RE.test(req.path); // <-- check the full path, not just `first`
