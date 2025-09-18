@@ -41,51 +41,45 @@ const RESERVED = new Set([
 
 // If the first path segment looks like a file (css/js/img/font/etc), ignore it.
 // This prevents assets from being mistaken for an affiliate slug.
-const FILE_EXT_RE =
-  /\.(?:css|js|mjs|map|png|jpe?g|gif|webp|avif|svg|ico|bmp|json|txt|xml|
-      woff2?|ttf|eot|otf|mp4|webm|ogg|wav|pdf)$/i;
+const FILE_EXT_RE = /\.(?:css|js|mjs|map|png|jpe?g|gif|webp|avif|svg|ico|bmp|json|txt|xml|woff2?|ttf|eot|otf|mp4|webm|ogg|wav|pdf)$/i;
 
 app.use((req, res, next) => {
-  const host = (req.headers.host || '').split(':')[0];
+  const host  = (req.headers.host || '').split(':')[0];
+  const first = req.path.split('/').filter(Boolean)[0];
+  const looksLikeFile = first ? FILE_EXT_RE.test(first) : false;
 
-  // 1) Force HTTPS behind Render's proxy
+  // 1) Always force HTTPS behind Render's proxy
   if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'] !== 'https') {
     return res.redirect(301, 'https://' + host + req.originalUrl);
   }
 
-  // 2) Capture affiliate slug from the 1st path segment (if any)
+  // 2) Treat first path segment as affiliate slug (if not a file or a reserved page)
   let slug = null;
-  if (req.path && req.path !== '/') {
-    const first = (req.path.split('/').filter(Boolean)[0] || '').toLowerCase();
-
-    // If the first segment is NOT a reserved page and NOT a file, treat as affiliate slug
-    if (!RESERVED.has(first) && !FILE_EXT_RE.test(first)) {
-      slug = first;
-    }
+  if (first && !RESERVED.has(first.toLowerCase()) && !looksLikeFile) {
+    slug = first.toLowerCase();
   }
 
   if (slug) {
-    // Set cookie for 90 days; share across apex + www
+    // Set cookie for 90 days, share across apex & www
     res.cookie('aff', slug, {
-      domain: COOKIE_DOMAIN,
-      maxAge: COOKIE_MAX_AGE,
+      domain: COOKIE_DOMAIN,      // e.g. ".myndmatterspack.com"
+      maxAge: COOKIE_MAX_AGE,     // e.g. 90 days
       sameSite: 'Lax',
       secure: true,
       httpOnly: false
     });
     req.affiliate = slug;
 
-    // Redirect to the homepage on WWW (strip the slug from the URL)
+    // Redirect to the home page (strip the slug), prefer www for canonical
     const targetHost = (host === PRIMARY_DOMAIN) ? 'www.' + PRIMARY_DOMAIN : host;
-    return res.redirect(302, 'https://' + targetHost + '/');
+    return res.redirect(302, `https://${targetHost}/`);
   }
 
-  // 3) Canonicalize apex -> www for everything else (keeps assets intact)
+  // 3) Canonical apex -> www (after possible slug capture above)
   if (host === PRIMARY_DOMAIN) {
-    return res.redirect(301, 'https://www.' + PRIMARY_DOMAIN + req.originalUrl);
+    return res.redirect(301, `https://www.${PRIMARY_DOMAIN}${req.originalUrl}`);
   }
 
-  // Continue to static assets, routes, etc.
   next();
 });
 // ===== end affiliate middleware =====
