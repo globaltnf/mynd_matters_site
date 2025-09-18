@@ -88,7 +88,7 @@ app.use((req, res, next) => {
 });
 // ===== end affiliate middleware =====
 
-// Serve static files (keep this AFTER the middleware)
+// Serve static files
 app.use(express.static(__dirname));
 
 // Parse JSON bodies
@@ -99,6 +99,21 @@ app.post('/create-checkout-session', async (req, res) => {
   try {
     // Extract customer details from the request body, if provided
     const { name, email, phone, address1, address2, postalCode, affiliate } = req.body || {};
+
+    // Be very defensive pulling the affiliate value:
+  const aff =
+    (affiliate || req.affiliate || (req.cookies && req.cookies.aff) || '').toString().trim();
+
+    // Use one object everywhere so it’s identical across Stripe objects
+  const baseMeta = {
+    affiliate: aff,
+    name: name || '',
+    phone: phone || '',
+    address_line1: address1 || '',
+    address_line2: address2 || '',
+    postal_code: postalCode || ''
+  };
+      
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'subscription',
@@ -111,26 +126,32 @@ app.post('/create-checkout-session', async (req, res) => {
             recurring: { interval: 'month' },
             product_data: {
               name: 'The MYND Matters Pack',
-              description: 'Monthly subscription for the MYND Matters Programme',
+              description: '1 month supply for the MYND Matters Programme',
             },
           },
           quantity: 1,
         },
       ],
-      // Attach customer email and metadata if provided
-      customer_email: email || undefined,
-      metadata: {
-        name: name || '',
-        phone: phone || '',
-        address_line1: address1 || '',
-        address_line2: address2 || '',
-        postal_code: postalCode || '',
-        affiliate: affiliate || req.affiliate || ''
-      },
-      // These URLs should be replaced with your deployed domain
-      success_url: `${req.protocol}://${req.get('host')}/success.html`,
-      cancel_url: `${req.protocol}://${req.get('host')}/cancel.html`,
-    });
+    // Helps Stripe link to the existing/new customer
+    customer_email: email || undefined,
+
+    // 1) Keep it on the Session (handy in Events)
+    metadata: baseMeta,
+
+    // 2) Put it on the Subscription (easy to report commissions later)
+    subscription_data: {
+      metadata: baseMeta
+    },
+
+    // 3) Put it on the PaymentIntent that pays the first invoice
+    payment_intent_data: {
+      metadata: baseMeta
+    },
+
+    success_url: `https://${req.get('host')}/success.html`,
+    cancel_url: `https://${req.get('host')}/cancel.html`
+  });
+    
     res.json({ url: session.url });
   } catch (err) {
     console.error('Error creating checkout session', err);
