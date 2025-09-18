@@ -27,57 +27,57 @@ app.use(express.urlencoded({ extended: true }));
 // Cookies
 app.use(cookieParser());
 
-// ===== Path-based affiliate capture + canonical HTTPS/WWW =====
+// ===== Path-based affiliate capture + canonical/HTTPS =====
 const PRIMARY_DOMAIN = 'myndmatterspack.com';
-const COOKIE_DOMAIN  = '.' + PRIMARY_DOMAIN;                  // share cookie across apex + www
-const COOKIE_MAX_AGE = 90 * 24 * 60 * 60 * 1000;             // 90 days
+const COOKIE_DOMAIN  = '.' + PRIMARY_DOMAIN;        // share cookie across apex & www
+const COOKIE_MAX_AGE = 90 * 24 * 60 * 60 * 1000;    // 90 days
 
-// Paths we know are real pages (never treat these as affiliate slugs)
+// Paths we know are real pages or folders (never treat these as affiliate slugs)
 const RESERVED = new Set([
   '', 'index.html', 'success.html', 'cancel.html',
   'checkout.html', 'delivery-details.html',
-  'robots.txt', 'sitemap.xml', 'favicon.ico'
+  'checkout.js', 'script.js', 'style.css',
+  'robots.txt', 'sitemap.xml', 'favicon.ico',
+  // optional top-level asset folders:
+  'images', 'img', 'assets'
 ]);
 
-// If the first path segment looks like a file (css/js/img/font/etc), ignore it.
-// This prevents assets from being mistaken for an affiliate slug.
+// Treat requests that *end* with a known file extension as files (css/js/img/font/…)
 const FILE_EXT_RE = /\.(?:css|js|mjs|map|png|jpe?g|gif|webp|avif|svg|ico|bmp|json|txt|xml|woff2?|ttf|eot|otf|mp4|webm|ogg|wav|pdf)$/i;
 
 app.use((req, res, next) => {
   const host  = (req.headers.host || '').split(':')[0];
-  const first = req.path.split('/').filter(Boolean)[0];
-  const looksLikeFile = first ? FILE_EXT_RE.test(first) : false;
+  const first = (req.path.split('/').filter(Boolean)[0] || '').toLowerCase();
+  const looksLikeFile = FILE_EXT_RE.test(req.path); // <-- check the full path, not just `first`
 
-  // 1) Always force HTTPS behind Render's proxy
+  // 1) Force HTTPS behind Render's proxy
   if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'] !== 'https') {
     return res.redirect(301, 'https://' + host + req.originalUrl);
   }
 
-  // 2) Treat first path segment as affiliate slug (if not a file or a reserved page)
+  // 2) Capture affiliate slug from the first path segment (if any)
   let slug = null;
-  if (first && !RESERVED.has(first.toLowerCase()) && !looksLikeFile) {
-    slug = first.toLowerCase();
+  if (first && !RESERVED.has(first) && !looksLikeFile) {
+    slug = first;
   }
 
+  // If we captured a slug, set the cookie and strip it from the URL by redirecting home
   if (slug) {
-    // Set cookie for 90 days, share across apex & www
     res.cookie('aff', slug, {
-      domain: COOKIE_DOMAIN,      // e.g. ".myndmatterspack.com"
-      maxAge: COOKIE_MAX_AGE,     // e.g. 90 days
+      domain: COOKIE_DOMAIN,
+      maxAge: COOKIE_MAX_AGE,
       sameSite: 'Lax',
       secure: true,
       httpOnly: false
     });
-    req.affiliate = slug;
-
-    // Redirect to the home page (strip the slug), prefer www for canonical
+    // Redirect to home on the canonical host (www for consistency)
     const targetHost = (host === PRIMARY_DOMAIN) ? 'www.' + PRIMARY_DOMAIN : host;
-    return res.redirect(302, `https://${targetHost}/`);
+    return res.redirect(302, 'https://' + targetHost + '/');
   }
 
-  // 3) Canonical apex -> www (after possible slug capture above)
+  // 3) Canonical apex -> www (after possible slug capture)
   if (host === PRIMARY_DOMAIN) {
-    return res.redirect(301, `https://www.${PRIMARY_DOMAIN}${req.originalUrl}`);
+    return res.redirect(301, 'https://www.' + PRIMARY_DOMAIN + req.originalUrl);
   }
 
   next();
