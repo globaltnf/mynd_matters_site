@@ -91,6 +91,70 @@ app.use((req, res, next) => {
 // Serve static files
 app.use(express.static(__dirname));
 
+// ---- Stripe Webhook (MUST be before express.json) ----
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+app.post('/stripe/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+  } catch (err) {
+    console.error('Webhook signature verification failed:', err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  try {
+    switch (event.type) {
+      // Ensure the Subscription carries the metadata (belt & braces)
+      case 'checkout.session.completed': {
+        const session = event.data.object;
+        if (session.mode === 'subscription' && session.subscription) {
+          await stripe.subscriptions.update(session.subscription, {
+            metadata: { ...session.metadata },
+          });
+        }
+        break;
+      }
+
+      // Copy metadata onto every invoice that gets created
+      case 'invoice.created': {
+        const invoice = event.data.object;
+
+        // Start with whatever metadata is already on the invoice
+        let meta = { ...invoice.metadata };
+
+        // Merge in subscription metadata if present
+        if (invoice.subscription) {
+          const sub = await stripe.subscriptions.retrieve(invoice.subscription);
+          meta = { ...meta, ...sub.metadata };
+        }
+
+        // Optionally merge in customer metadata as a fallback
+        if (invoice.customer) {
+          const customer = await stripe.customers.retrieve(invoice.customer);
+          meta = { ...meta, ...customer.metadata };
+        }
+
+        if (Object.keys(meta).length) {
+          await stripe.invoices.update(invoice.id, { metadata: meta });
+        }
+        break;
+      }
+
+      default:
+        // no-op for other events
+        break;
+    }
+
+    res.json({ received: true });
+  } catch (err) {
+    console.error('Webhook handler failed:', err);
+    res.status(500).end();
+  }
+});
+
 // Parse JSON bodies
 app.use(express.json());
 
