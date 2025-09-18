@@ -101,19 +101,20 @@ app.post('/create-checkout-session', async (req, res) => {
     const { name, email, phone, address1, address2, postalCode, affiliate } = req.body || {};
 
     // Be very defensive pulling the affiliate value:
-  const aff =
-    (affiliate || req.affiliate || (req.cookies && req.cookies.aff) || '').toString().trim();
+    const aff = (affiliate || req.affiliate || (req.cookies && req.cookies.aff) || '')
+      .toString()
+      .trim();
 
     // Use one object everywhere so it’s identical across Stripe objects
-  const baseMeta = {
-    affiliate: aff,
-    name: name || '',
-    phone: phone || '',
-    address_line1: address1 || '',
-    address_line2: address2 || '',
-    postal_code: postalCode || ''
-  };
-      
+    const baseMeta = {
+      affiliate: aff,
+      name: name || '',
+      phone: phone || '',
+      address_line1: address1 || '',
+      address_line2: address2 || '',
+      postal_code: postalCode || ''
+    };
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'subscription',
@@ -121,8 +122,7 @@ app.post('/create-checkout-session', async (req, res) => {
         {
           price_data: {
             currency: 'sgd',
-            // Price is S$258 per month (amount in cents)
-            unit_amount: 25800,
+            unit_amount: 25800,                 // S$258.00
             recurring: { interval: 'month' },
             product_data: {
               name: 'The MYND Matters Pack',
@@ -132,29 +132,32 @@ app.post('/create-checkout-session', async (req, res) => {
           quantity: 1,
         },
       ],
-    // Helps Stripe link to the existing/new customer
-    customer_email: email || undefined,
 
-    // 1) Keep it on the Session (handy in Events)
-    metadata: baseMeta,
+      // Helps Stripe link to the existing/new customer
+      customer_email: email || undefined,
 
-    // 2) Put it on the Subscription (easy to report commissions later)
-    subscription_data: {
-      metadata: baseMeta
-    },
+      // 1) Keep it on the Session (handy in webhook events)
+      metadata: baseMeta,
 
-    // 3) Put it on the PaymentIntent that pays the first invoice
-    payment_intent_data: {
-      metadata: baseMeta
-    },
+      // 2) Put it on the Subscription (for commission reporting)
+      subscription_data: {
+        metadata: baseMeta,
+      },
 
-    success_url: `https://${req.get('host')}/success.html`,
-    cancel_url: `https://${req.get('host')}/cancel.html`
-  });
-    
+      // No payment_intent_data here for subscriptions
+
+      success_url: `https://${req.get('host')}/success.html`,
+      cancel_url:  `https://${req.get('host')}/cancel.html`,
+    });
+
     res.json({ url: session.url });
   } catch (err) {
-    console.error('Error creating checkout session', err);
+    console.error(
+      'Error creating checkout session:',
+      err?.type || '',
+      err?.code || '',
+      err?.message || err
+    );
     res.status(500).json({ error: 'Unable to create checkout session' });
   }
 });
