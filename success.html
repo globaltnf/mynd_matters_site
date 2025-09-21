@@ -1,18 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payment Successful ‒ MYND Matters</title>
-  <link href="style.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thank you – Order completed</title>
+
+  <!-- Fonts to match your site -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#ffffff;
+      --ink:#0f172a;     /* slate-900 */
+      --muted:#475569;   /* slate-600 */
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      line-height:1.6;
+    }
+    .wrapper{
+      min-height:100dvh;
+      display:grid;
+      place-items:center;
+      padding:clamp(24px,6vw,64px);
+    }
+    .card{
+      max-width:880px;
+      width:100%;
+      text-align:center;
+    }
+    h1{
+      font-family:'Playfair Display',serif;
+      font-weight:800;
+      letter-spacing:.5px;
+      font-size:clamp(40px,8vw,80px);
+      margin:0 0 .35em;
+    }
+    .lead{
+      font-size:clamp(18px,2.6vw,28px);
+      color:var(--ink);
+      margin:0 0 2.2rem;
+    }
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+    .icon{
+      width:84px;height:84px;
+      display:inline-grid;place-items:center;
+      background:#fff;border-radius:18px;
+      box-shadow:0 4px 20px rgba(15,23,42,.08),0 1px 0 rgba(15,23,42,.04);
+      flex:0 0 auto;
+    }
+    .icon svg{width:56px;height:56px}
+    .small{
+      max-width:980px;
+      color:var(--muted);
+      font-size:clamp(14px,1.9vw,18px);
+    }
+    .btn{
+      display:inline-block;
+      margin-top:28px;
+      padding:12px 20px;
+      border-radius:12px;
+      border:1px solid #e2e8f0;
+      text-decoration:none;
+      color:var(--ink);
+    }
+    .btn:hover{background:#f8fafc}
+  </style>
 </head>
-<body class="cta">
-  <h2>Thank you for your purchase!</h2>
-  <p>Your payment for The MYND Matters Pack is confirmed. Do check your inbox for a confirmation email and we will begin preparing for delivery promptly.</p>
-  <ul>
-  <li><strong>Amount charged:</strong> S$258.00</li>
-  <li><strong>Delivery:</strong> 3–5 business days</li>
-  <a href="index.html" class="cta-button">Return to homepage</a>
+<body>
+  <main class="wrapper">
+    <section class="card" role="status" aria-live="polite">
+      <h1>Thank you.</h1>
+      <p class="lead">Your order was completed successfully.</p>
+
+      <div class="row">
+        <span class="icon" aria-hidden="true">
+          <!-- Simple envelope with motion lines (inline SVG, no external asset needed) -->
+          <svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" fill="none">
+            <path d="M8 45h14M2 60h20M12 30h12" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+            <rect x="36" y="18" width="72" height="54" rx="8" stroke="#111827" stroke-width="6" fill="#fff"/>
+            <path d="M40 24l32 24a12 12 0 0016 0l32-24" stroke="#111827" stroke-width="6" fill="none" stroke-linejoin="round"/>
+          </svg>
+        </span>
+
+        <p class="small">
+          An email receipt including the details about your order has been sent to the email address provided.
+          Please keep it for your records.
+        </p>
+      </div>
+
+      <a class="btn" href="/">Back to home</a>
+    </section>
+  </main>
 </body>
 </html>
