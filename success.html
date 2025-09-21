@@ -5,102 +5,158 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Thank you – Order completed</title>
 
-  <!-- Fonts to match your site -->
+  <!-- Brand fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#ffffff;
-      --ink:#0f172a;     /* slate-900 */
-      --muted:#475569;   /* slate-600 */
+      /* Brand-ish palette to match the site */
+      --cream:#F7F2EA;     /* page background */
+      --card:#ffffff;      /* card background */
+      --ink:#1D2A44;       /* deep navy headings/text */
+      --muted:#5B6475;     /* body copy */
+      --amber:#F59E0B;     /* CTA accent */
+      --line:#E8E3DA;      /* subtle divider */
+      --shadow:0 10px 30px rgba(29,42,68,.08), 0 1px 0 rgba(29,42,68,.04);
     }
+
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      background:var(--bg);
+      background:var(--cream);
       color:var(--ink);
       font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       line-height:1.6;
     }
-    .wrapper{
-      min-height:100dvh;
+
+    .wrap{
+      min-height:100%;
       display:grid;
       place-items:center;
       padding:clamp(24px,6vw,64px);
     }
+
     .card{
-      max-width:880px;
+      background:var(--card);
+      box-shadow:var(--shadow);
+      border-radius:20px;
+      max-width:900px;
       width:100%;
+      padding:clamp(28px,6vw,56px);
       text-align:center;
+      border:1px solid var(--line);
+      position:relative;
+      overflow:hidden;
     }
+
+    /* a subtle amber bar at the top, like elements on your site */
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0 0 auto 0;
+      height:6px;
+      background:var(--amber);
+    }
+
     h1{
       font-family:'Playfair Display',serif;
       font-weight:800;
-      letter-spacing:.5px;
+      letter-spacing:.4px;
       font-size:clamp(40px,8vw,80px);
       margin:0 0 .35em;
+      color:var(--ink);
     }
+
     .lead{
       font-size:clamp(18px,2.6vw,28px);
       color:var(--ink);
-      margin:0 0 2.2rem;
+      margin:0 0 2rem;
     }
+
     .row{
       display:flex;
       align-items:center;
       justify-content:center;
       gap:18px;
       flex-wrap:wrap;
+      margin:0 auto 4px;
+      max-width:980px;
     }
+
     .icon{
       width:84px;height:84px;
       display:inline-grid;place-items:center;
       background:#fff;border-radius:18px;
-      box-shadow:0 4px 20px rgba(15,23,42,.08),0 1px 0 rgba(15,23,42,.04);
+      box-shadow:var(--shadow);
       flex:0 0 auto;
+      border:1px solid var(--line);
     }
     .icon svg{width:56px;height:56px}
-    .small{
+
+    .note{
       max-width:980px;
       color:var(--muted);
       font-size:clamp(14px,1.9vw,18px);
     }
+
+    .actions{
+      margin-top:28px;
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
     .btn{
       display:inline-block;
-      margin-top:28px;
       padding:12px 20px;
       border-radius:12px;
-      border:1px solid #e2e8f0;
       text-decoration:none;
-      color:var(--ink);
+      font-weight:600;
+      transition:transform .04s ease, box-shadow .2s ease, background .2s ease;
     }
-    .btn:hover{background:#f8fafc}
+    .btn-primary{
+      background:var(--amber);
+      color:#fff;
+      box-shadow:0 6px 14px rgba(245,158,11,.25);
+    }
+    .btn-primary:hover{transform:translateY(-1px)}
+    .btn-ghost{
+      color:var(--ink);
+      background:#fff;
+      border:1px solid var(--line);
+    }
+    .btn-ghost:hover{background:#faf8f3}
   </style>
 </head>
 <body>
-  <main class="wrapper">
+  <main class="wrap">
     <section class="card" role="status" aria-live="polite">
       <h1>Thank you.</h1>
       <p class="lead">Your order was completed successfully.</p>
 
       <div class="row">
         <span class="icon" aria-hidden="true">
-          <!-- Simple envelope with motion lines (inline SVG, no external asset needed) -->
+          <!-- Envelope with motion lines (inline SVG) -->
           <svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" fill="none">
-            <path d="M8 45h14M2 60h20M12 30h12" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
-            <rect x="36" y="18" width="72" height="54" rx="8" stroke="#111827" stroke-width="6" fill="#fff"/>
-            <path d="M40 24l32 24a12 12 0 0016 0l32-24" stroke="#111827" stroke-width="6" fill="none" stroke-linejoin="round"/>
+            <path d="M8 45h14M2 60h20M12 30h12" stroke="#C7CDD6" stroke-width="6" stroke-linecap="round"/>
+            <rect x="36" y="18" width="72" height="54" rx="8" stroke="#1D2A44" stroke-width="6" fill="#fff"/>
+            <path d="M40 24l32 24a12 12 0 0016 0l32-24" stroke="#1D2A44" stroke-width="6" fill="none" stroke-linejoin="round"/>
           </svg>
         </span>
 
-        <p class="small">
-          An email receipt including the details about your order has been sent to the email address provided.
-          Please keep it for your records.
+        <p class="note">
+          An email receipt including the details about your order has been sent to the
+          email address provided. Please keep it for your records.
         </p>
       </div>
 
-      <a class="btn" href="/">Back to home</a>
+      <div class="actions">
+        <a class="btn btn-primary" href="/">Back to home</a>
+        <a class="btn btn-ghost" href="/results.html">See how to get results</a>
+      </div>
     </section>
   </main>
 </body>
