@@ -181,13 +181,12 @@ app.post('/create-checkout-session', async (req, res) => {
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      mode: 'subscription',
+      mode: 'payment',
       line_items: [
         {
           price_data: {
             currency: 'sgd',
             unit_amount: 25800,                 // S$258.00
-            recurring: { interval: 'month' },
             product_data: {
               name: 'The MYND Matters Pack',
               description: '1 month supply for the MYND Matters Programme',
@@ -197,22 +196,28 @@ app.post('/create-checkout-session', async (req, res) => {
         },
       ],
 
-      // Helps Stripe link to the existing/new customer
+      // Helps Stripe tie the payment to a customer + send receipt
       customer_email: email || undefined,
 
-      // 1) Keep it on the Session (handy in webhook events)
+      // Keep the same metadata everywhere
+  metadata: baseMeta,                        // on the Checkout Session
+  payment_intent_data: { metadata: baseMeta }, // on the PaymentIntent/Charge
+
+  // >>> NEW: also put it on the Invoice Stripe will create for this payment
+  invoice_creation: {
+    enabled: true,
+    invoice_data: {
       metadata: baseMeta,
+      // Optional extras:
+      // description: 'One-time invoice for MYND Matters Pack',
+      // footer: 'Thanks for your purchase!',
+      // custom_fields: [{ name: 'Affiliate', value: baseMeta.affiliate || '' }],
+    },
+  },
 
-      // 2) Put it on the Subscription (for commission reporting)
-      subscription_data: {
-        metadata: baseMeta,
-      },
-
-      // No payment_intent_data here for subscriptions
-
-      success_url: `https://${req.get('host')}/success.html`,
-      cancel_url:  `https://${req.get('host')}/cancel.html`,
-    });
+  success_url: `https://${req.get('host')}/success.html`,
+  cancel_url:  `https://${req.get('host')}/cancel.html`,
+});
 
     res.json({ url: session.url });
   } catch (err) {
