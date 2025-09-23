@@ -186,7 +186,7 @@ app.post('/create-checkout-session', async (req, res) => {
         {
           price_data: {
             currency: 'sgd',
-            unit_amount: 25800,                 // S$258.00
+            unit_amount: 100,                 // S$258.00
             product_data: {
               name: 'The MYND Matters Pack',
               description: '1 month supply for the MYND Matters Programme',
