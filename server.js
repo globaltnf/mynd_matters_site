@@ -169,6 +169,9 @@ app.post('/create-checkout-session', async (req, res) => {
       .toString()
       .trim();
 
+    // 1) Read initial qty from the form (falls back to 1)
+    const initialQty = Math.max(1, parseInt(req.body.quantity, 10) || 1);
+
     // Use one object everywhere so it’s identical across Stripe objects
     const baseMeta = {
       affiliate: aff,
@@ -177,6 +180,8 @@ app.post('/create-checkout-session', async (req, res) => {
       address_line1: address1 || '',
       address_line2: address2 || '',
       postal_code: postalCode || ''
+      // capture the initial quantity for reference (final quantity appears on invoice)
+  initial_quantity: String(initialQty),
     };
 
     const session = await stripe.checkout.sessions.create({
@@ -191,7 +196,13 @@ app.post('/create-checkout-session', async (req, res) => {
               name: '1-month supply of The MYND Matters Pack',
             },
           },
-          quantity: 1,
+          // Enable the quantity picker on the Stripe page
+      adjustable_quantity: {
+        enabled: true,
+        minimum: 1,     // set your lower bound
+        maximum: 10,    // set your upper bound (change as needed)
+      },
+      quantity: initialQty, // pre-filled starting quantity
         },
       ],
 
@@ -205,13 +216,7 @@ app.post('/create-checkout-session', async (req, res) => {
   // >>> NEW: also put it on the Invoice Stripe will create for this payment
   invoice_creation: {
     enabled: true,
-    invoice_data: {
-      metadata: baseMeta,
-      // Optional extras:
-      // description: 'One-time invoice for MYND Matters Pack',
-      // footer: 'Thanks for your purchase!',
-      // custom_fields: [{ name: 'Affiliate', value: baseMeta.affiliate || '' }],
-    },
+    invoice_data: { metadata: baseMeta },
   },
 
   success_url: `https://${req.get('host')}/success.html`,
