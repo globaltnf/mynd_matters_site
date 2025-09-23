@@ -179,9 +179,9 @@ app.post('/create-checkout-session', async (req, res) => {
       phone: phone || '',
       address_line1: address1 || '',
       address_line2: address2 || '',
-      postal_code: postalCode || ''
+      postal_code: postalCode || '',
       // capture the initial quantity for reference (final quantity appears on invoice)
-  initial_quantity: String(initialQty),
+  initial_quantity: String(initialQty)
     };
 
     const session = await stripe.checkout.sessions.create({
