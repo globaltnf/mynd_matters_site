@@ -189,7 +189,6 @@ app.post('/create-checkout-session', async (req, res) => {
             unit_amount: 100,                 // S$258.00
             product_data: {
               name: '1-month supply of The MYND Matters Pack',
-              description: 'One-time purchase of a 1-month supply',
             },
           },
           quantity: 1,
