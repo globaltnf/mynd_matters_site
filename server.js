@@ -30,7 +30,7 @@ app.use(cookieParser());
 // ===== Path-based affiliate capture + canonical/HTTPS =====
 const PRIMARY_DOMAIN = 'myndmatterspack.com';
 const COOKIE_DOMAIN  = '.' + PRIMARY_DOMAIN;        // share cookie across apex & www
-const COOKIE_MAX_AGE = 90 * 24 * 60 * 60 * 1000;    // 365 days
+const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365;    // 365 days
 
 // Paths we know are real pages or folders (never treat these as affiliate slugs)
 const RESERVED = new Set([
