@@ -154,10 +154,6 @@ app.post('/stripe/webhook', express.raw({ type: 'application/json' }), async (re
     default:
       console.log(`ℹ️ Unhandled event type ${event.type}`);
   }
-} catch (err) {
-  // Log but still ack so Stripe stops retrying
-  console.error('Webhook handler error:', err);
-}
 
 // Always acknowledge so Stripe stops retrying
 res.sendStatus(200);
