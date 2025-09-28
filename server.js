@@ -99,22 +99,24 @@ app.post('/stripe/webhook', express.raw({ type: 'application/json' }), async (re
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-  } catch (err) {
-    console.error('Webhook signature verification failed:', err.message);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
-
+      if (!endpointSecret) {
+        throw new Error('Missing STRIPE_WEBHOOK_SECRET env var');
+      }
+      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    } catch (err) {
+      console.error('Webhook signature verification failed:', err.message);
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+  
   try {
     switch (event.type) {
-      // Ensure the Subscription carries the metadata (belt & braces)
       case 'checkout.session.completed': {
         const session = event.data.object;
-        if (session.mode === 'subscription' && session.subscription) {
-          await stripe.subscriptions.update(session.subscription, {
-            metadata: { ...session.metadata },
+        console.log('✅ checkout.session.completed', {
+            id: session.id,
+            mode: session.mode,
+            metadata: session.metadata
           });
-        }
         break;
       }
 
@@ -143,9 +145,24 @@ app.post('/stripe/webhook', express.raw({ type: 'application/json' }), async (re
         break;
       }
 
-      default:
-        // no-op for other events
-        break;
+      case 'invoice.payment_succeeded': {
+      const invoice = event.data.object;
+      console.log('✅ invoice.payment_succeeded', invoice.id);
+      break;
+    }
+
+    default:
+      console.log(`ℹ️ Unhandled event type ${event.type}`);
+  }
+} catch (err) {
+  // Log but still ack so Stripe stops retrying
+  console.error('Webhook handler error:', err);
+}
+
+// Always acknowledge so Stripe stops retrying
+res.sendStatus(200);
+  
+      break;
     }
 
     res.json({ received: true });
