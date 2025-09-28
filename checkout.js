@@ -30,6 +30,8 @@ const cookieAffMatch = document.cookie.match(/(?:^|;\s*)aff=([^;]+)/);
 const affiliate =
   (affiliateField && affiliateField.value.trim()) ||
   (cookieAffMatch ? decodeURIComponent(cookieAffMatch[1]) : '');
+
+try { gtag('event', 'checkout_submit'); } catch (_) {}
       
       const response = await fetch('/create-checkout-session', {
         method: 'POST',
