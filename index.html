@@ -18,6 +18,42 @@
   <!-- Google fonts for elegant typography -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
+
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-93W7T8GJW6');
+</script>
+
+<script>
+  // Helper: read cookie by name
+  function readCookie(name) {
+    const m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+    return m ? decodeURIComponent(m[1]) : '';
+  }
+
+  // 1) Get affiliate from cookie (set by your server). Fallback to first path segment.
+  (function setAffiliate() {
+    let aff = readCookie('aff') || '';
+    if (!aff) {
+      const first = location.pathname.split('/').filter(Boolean)[0] || '';
+      const reserved = new Set(['', 'index.html','success.html','cancel.html','checkout.html','delivery-details.html','script.js','checkout.js','style.css','images','img','assets','favicon.ico','robots.txt','sitemap.xml']);
+      if (first && !reserved.has(first.toLowerCase())) aff = first.toLowerCase();
+    }
+
+    if (aff) {
+      // 2) Set as GA user property (sticky)
+      gtag('set', 'user_properties', { affiliate: aff });
+
+      // 3) Send an event so you can filter/reports immediately
+      gtag('event', 'affiliate_set', { affiliate: aff });
+    }
+  })();
+</script>
+
   <!-- Stripe.js will be loaded on demand inside script.js -->
 </head>
 <body>
