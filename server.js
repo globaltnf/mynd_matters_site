@@ -123,8 +123,6 @@ app.post('/stripe/webhook', express.raw({ type: 'application/json' }), async (re
       // Copy metadata onto every invoice that gets created
       case 'invoice.created': {
         const invoice = event.data.object;
-
-        // Start with whatever metadata is already on the invoice
         let meta = { ...invoice.metadata };
 
         // Merge in subscription metadata if present
@@ -146,9 +144,9 @@ app.post('/stripe/webhook', express.raw({ type: 'application/json' }), async (re
       }
 
       case 'invoice.payment_succeeded': {
-      const invoice = event.data.object;
-      console.log('✅ invoice.payment_succeeded', invoice.id);
-      break;
+        const invoice = event.data.object;
+        console.log('✅ invoice.payment_succeeded', invoice.id);
+        break;
     }
 
     default:
@@ -161,6 +159,7 @@ app.post('/stripe/webhook', express.raw({ type: 'application/json' }), async (re
 
 // Always acknowledge so Stripe stops retrying
 return res.sendStatus(200);
+});
 
 // Parse JSON bodies
 app.use(express.json());
