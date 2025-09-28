@@ -271,5 +271,40 @@
   </footer>
 
   <script src="script.js" defer></script>
+
+  <script>
+  (function () {
+    // Track first CTA button
+    const btn1 = document.getElementById('buy-button');
+    if (btn1) {
+      btn1.addEventListener('click', function() {
+        gtag('event', 'begin_checkout', {
+          items: [{ 
+            item_id: 'mynd_pack',
+            item_name: '1-month supply of The MYND Matters Pack',
+            quantity: 1,
+            cta_location: 'hero_section'
+          }]
+        });
+      });
+    }
+
+    // Track second CTA button
+    const btn2 = document.getElementById('buy-button-2');
+    if (btn2) {
+      btn2.addEventListener('click', function() {
+        gtag('event', 'begin_checkout', {
+          items: [{ 
+            item_id: 'mynd_pack',
+            item_name: '1-month supply of The MYND Matters Pack',
+            quantity: 1,
+            cta_location: 'bottom_section'
+          }]
+        });
+      });
+    }
+  })();
+</script>
+  
 </body>
 </html>
